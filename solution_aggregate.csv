@@ -1,0 +1,14 @@
+origin,destination,vehicle_class,distance_miles,vehicles,flow_tonnes
+Chicago,New York,Class 1,847.273,6,120.000000
+Chicago,New York,Class 2,847.273,5,140.000000
+Dallas,Los Angeles,Class 2,1473.225,1,25.300000
+Dallas,Houston,Class 1,263.304,6,105.400000
+Dallas,Phoenix,Class 2,1046.578,2,48.300000
+Dallas,San Antonio,Class 1,297.904,4,71.000000
+Atlanta,New York,Class 1,884.167,4,77.400000
+Atlanta,New York,Class 2,884.167,2,56.000000
+Atlanta,Houston,Class 1,825.723,1,4.500000
+Atlanta,Philadelphia,Class 1,790.486,4,72.100000
+Kansas City,Los Angeles,Class 1,1608.427,1,12.000000
+Kansas City,Los Angeles,Class 2,1608.427,5,140.000000
+Kansas City,Phoenix,Class 2,1234.935,1,28.000000

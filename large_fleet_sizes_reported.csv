@@ -1,0 +1,9 @@
+family,commodities,classes,vehicles_per_class,aggregate_variables,labeled_variables,aggregate_integer,labeled_integer,aggregate_constraints,labeled_constraints,reduction_percent
+LF2,2,2,50,210,10500,70,3500,96,3624,98.0
+LF2,2,2,100,210,21000,70,7000,96,7224,99.0
+LF2,2,2,200,210,42000,70,14000,96,14424,99.5
+LF2,2,2,500,210,105000,70,35000,96,36024,99.8
+LF3,3,3,50,420,21000,105,5250,144,5436,98.0
+LF3,3,3,100,420,42000,105,10500,144,10836,99.0
+LF3,3,3,200,420,84000,105,21000,144,21636,99.5
+LF3,3,3,500,420,210000,105,52500,144,54036,99.8

@@ -1,0 +1,9 @@
+family,vehicles_per_class,aggregate_time_seconds,labeled_time_seconds,aggregate_optima,labeled_optima,labeled_incumbents,lp_gap_percent,max_incumbent_gap_percent,max_lp_difference,labeled_lp_time_seconds
+LF2,50,0.054,5.052,3,0,3/3,7.55,0.15,4.6e-13,0.068
+LF2,100,0.086,5.121,3,0,3/3,7.55,4.22,6.9e-13,0.160
+LF2,200,0.148,5.278,3,0,3/3,7.55,1.83,2.3e-13,0.496
+LF2,500,0.261,5.486,3,0,3/3,7.55,16.27,4.6e-13,2.650
+LF3,50,0.823,5.084,3,0,2/3,4.97,1.92,4.6e-13,0.140
+LF3,100,0.420,5.176,3,0,0/3,4.97,,4.6e-13,0.403
+LF3,200,0.394,5.641,3,0,0/3,4.97,,4.6e-13,1.189
+LF3,500,0.891,6.140,3,0,0/3,4.97,,4.6e-13,6.276
