@@ -1,5 +1,5 @@
 origin,latitude,longitude,stock_tonnes,data_status
-Chicago,41.8376,-87.6818,260,observed_coordinates_calibrated_stock
-Dallas,32.7933,-96.7665,250,observed_coordinates_calibrated_stock
-Atlanta,33.7629,-84.4227,210,observed_coordinates_calibrated_stock
-Kansas City,39.1251,-94.5510,180,observed_coordinates_calibrated_stock
+Chicago,41.837045,-87.684939,260,observed_coordinates_calibrated_stock
+Dallas,32.793333,-96.766513,250,observed_coordinates_calibrated_stock
+Atlanta,33.762909,-84.422675,210,observed_coordinates_calibrated_stock
+Kansas City,39.122361,-94.555117,180,observed_coordinates_calibrated_stock

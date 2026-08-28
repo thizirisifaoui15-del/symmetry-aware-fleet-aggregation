@@ -1,7 +1,7 @@
 destination,latitude,longitude,demand_tonnes,data_status
-New York,40.6943,-73.9249,393.4,observed_coordinates_population_weighted_demand
-Los Angeles,34.1141,-118.4068,177.3,observed_coordinates_population_weighted_demand
-Houston,29.7860,-95.3885,109.9,observed_coordinates_population_weighted_demand
-Phoenix,33.5722,-112.0901,76.3,observed_coordinates_population_weighted_demand
-Philadelphia,40.0077,-75.1339,72.1,observed_coordinates_population_weighted_demand
-San Antonio,29.4632,-98.5238,71.0,observed_coordinates_population_weighted_demand
+New York,40.662712,-73.938677,393.404996747,observed_coordinates_population_weighted_demand
+Los Angeles,34.019394,-118.410825,177.307481250,observed_coordinates_population_weighted_demand
+Houston,29.785743,-95.388806,109.860973582,observed_coordinates_population_weighted_demand
+Phoenix,33.572154,-112.090132,76.323455258,observed_coordinates_population_weighted_demand
+Philadelphia,40.009376,-75.133346,72.144062566,observed_coordinates_population_weighted_demand
+San Antonio,29.463408,-98.524287,70.959030597,observed_coordinates_population_weighted_demand

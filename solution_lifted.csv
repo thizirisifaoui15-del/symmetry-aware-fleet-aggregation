@@ -10,29 +10,29 @@ Class 1,Class 1-08,Dallas,Houston,20.0
 Class 1,Class 1-09,Dallas,Houston,20.0
 Class 1,Class 1-10,Dallas,Houston,20.0
 Class 1,Class 1-11,Dallas,Houston,20.0
-Class 1,Class 1-12,Dallas,Houston,5.399999999999963
+Class 1,Class 1-12,Dallas,Houston,5.410032895000029
 Class 1,Class 1-13,Dallas,San Antonio,20.0
 Class 1,Class 1-14,Dallas,San Antonio,20.0
 Class 1,Class 1-15,Dallas,San Antonio,20.0
-Class 1,Class 1-16,Dallas,San Antonio,11.0
+Class 1,Class 1-16,Dallas,San Antonio,10.959030596999995
 Class 1,Class 1-17,Atlanta,New York,20.0
 Class 1,Class 1-18,Atlanta,New York,20.0
 Class 1,Class 1-19,Atlanta,New York,20.0
-Class 1,Class 1-20,Atlanta,New York,17.399999999999878
-Class 1,Class 1-21,Atlanta,Houston,4.500000000000071
+Class 1,Class 1-20,Atlanta,New York,17.404996747
+Class 1,Class 1-21,Atlanta,Houston,4.450940686999971
 Class 1,Class 1-22,Atlanta,Philadelphia,20.0
 Class 1,Class 1-23,Atlanta,Philadelphia,20.0
 Class 1,Class 1-24,Atlanta,Philadelphia,20.0
-Class 1,Class 1-25,Atlanta,Philadelphia,12.100000000000023
-Class 1,Class 1-26,Kansas City,Los Angeles,11.99999999999389
+Class 1,Class 1-25,Atlanta,Philadelphia,12.144062566000002
+Class 1,Class 1-26,Kansas City,Los Angeles,11.999999999999739
 Class 2,Class 2-01,Chicago,New York,28.0
 Class 2,Class 2-02,Chicago,New York,28.0
 Class 2,Class 2-03,Chicago,New York,28.0
 Class 2,Class 2-04,Chicago,New York,28.0
-Class 2,Class 2-05,Chicago,New York,28.0
-Class 2,Class 2-06,Dallas,Los Angeles,25.30000000000004
+Class 2,Class 2-05,Chicago,New York,27.999999999999886
+Class 2,Class 2-06,Dallas,Los Angeles,25.30748125000011
 Class 2,Class 2-07,Dallas,Phoenix,28.0
-Class 2,Class 2-08,Dallas,Phoenix,20.299999999999997
+Class 2,Class 2-08,Dallas,Phoenix,20.323455257999996
 Class 2,Class 2-09,Atlanta,New York,28.0
 Class 2,Class 2-10,Atlanta,New York,28.0
 Class 2,Class 2-11,Kansas City,Los Angeles,28.0
@@ -40,4 +40,4 @@ Class 2,Class 2-12,Kansas City,Los Angeles,28.0
 Class 2,Class 2-13,Kansas City,Los Angeles,28.0
 Class 2,Class 2-14,Kansas City,Los Angeles,28.0
 Class 2,Class 2-15,Kansas City,Los Angeles,28.0
-Class 2,Class 2-16,Kansas City,Phoenix,27.999999999993932
+Class 2,Class 2-16,Kansas City,Phoenix,28.0
