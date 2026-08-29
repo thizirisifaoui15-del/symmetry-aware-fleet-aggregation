@@ -6,6 +6,7 @@ Usage: python validate_equivalence.py
 from __future__ import annotations
 
 from aggregate_transport import Destination, Instance, Origin, VehicleClass, lift_solution, solve_aggregate, solve_labeled
+from objective_functions import public_case_objective
 
 
 def main() -> None:
@@ -25,6 +26,9 @@ def main() -> None:
         ),
     )
     aggregate = solve_aggregate(toy)
+    recomputed_objective = public_case_objective(
+        toy, aggregate.flows, aggregate.counts
+    )
     labeled_objective = solve_labeled(toy)
     difference = abs(aggregate.objective - labeled_objective)
     lifted = lift_solution(toy, aggregate)
@@ -32,10 +36,12 @@ def main() -> None:
     expected_flow = sum(destination.demand_tonnes for destination in toy.destinations)
 
     assert difference <= 1e-6, (aggregate.objective, labeled_objective)
+    assert abs(recomputed_objective - aggregate.objective) <= 1e-6
     assert abs(lifted_flow - expected_flow) <= 1e-6
     assert all(float(row["load_tonnes"]) >= -1e-9 for row in lifted)
     print(f"aggregate_objective={aggregate.objective:.9f}")
     print(f"labeled_objective={labeled_objective:.9f}")
+    print(f"recomputed_objective={recomputed_objective:.9f}")
     print(f"absolute_difference={difference:.3e}")
     print(f"lifted_vehicles={len(lifted)}")
     print("validation=PASS")

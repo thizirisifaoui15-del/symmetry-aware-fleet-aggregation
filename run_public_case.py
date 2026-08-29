@@ -16,6 +16,7 @@ from aggregate_transport import (
     write_aggregate_solution,
     write_lifted_solution,
 )
+from objective_functions import public_case_objective
 
 
 ROOT = Path(__file__).resolve().parent
@@ -24,6 +25,11 @@ ROOT = Path(__file__).resolve().parent
 def main() -> None:
     instance = load_instance(ROOT)
     solution = solve_aggregate(instance)
+    objective_recomputed = public_case_objective(
+        instance, solution.flows, solution.counts
+    )
+    if abs(objective_recomputed - solution.objective) > 1e-6:
+        raise ValueError("Independent objective recomputation failed")
     write_aggregate_solution(ROOT / "solution_aggregate.csv", instance, solution)
     write_lifted_solution(ROOT / "solution_lifted.csv", lift_solution(instance, solution))
 
@@ -49,6 +55,7 @@ def main() -> None:
 
     used = solution.counts.sum(axis=(0, 1))
     print(f"objective={solution.objective:.6f}")
+    print(f"objective_recomputed={objective_recomputed:.6f}")
     print(f"vehicles_used={used.tolist()}")
     print("wrote solution_aggregate.csv, solution_lifted.csv, and sensitivity_results_generated.csv")
 
