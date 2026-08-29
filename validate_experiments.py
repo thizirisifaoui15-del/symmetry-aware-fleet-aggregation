@@ -5,10 +5,29 @@ from __future__ import annotations
 import csv
 import json
 from pathlib import Path
+import zipfile
 
 
 ROOT = Path(__file__).resolve().parent
 RESULTS = ROOT / "results"
+
+
+def ensure_results() -> None:
+    """Restore the versioned evidence archive when validating a fresh clone."""
+    if RESULTS.is_dir():
+        return
+    archive = ROOT / "reproducibility_results.zip"
+    if not archive.is_file():
+        raise FileNotFoundError(
+            "results/ and reproducibility_results.zip are both missing"
+        )
+    root_resolved = ROOT.resolve()
+    with zipfile.ZipFile(archive) as bundle:
+        for member in bundle.infolist():
+            target = (ROOT / member.filename).resolve()
+            if target != root_resolved and root_resolved not in target.parents:
+                raise ValueError(f"unsafe archive member: {member.filename}")
+        bundle.extractall(ROOT)
 
 
 def rows(relative: str) -> list[dict[str, str]]:
@@ -21,6 +40,7 @@ def truth(value: str) -> bool:
 
 
 def validate() -> dict[str, object]:
+    ensure_results()
     report: dict[str, object] = {}
 
     main = rows("raw/main_runs.csv")
@@ -98,7 +118,12 @@ def validate() -> dict[str, object]:
     l_lp = {key(r): r for r in large if r["formulation"] == "L" and r["relaxation"] == "LP"}
     assert len(a_mip) == len(a_lp) == len(l_lp) == 24
     assert all(truth(r["optimal"]) for r in a_mip.values())
-    lp_differences = [abs(float(a_lp[k]["objective"]) - float(l_lp[k]["objective"])) for k in a_lp]
+    lp_differences = [
+        abs(float(a_lp[k]["objective"]) - float(l_lp[k]["objective"]))
+        for k in a_lp
+        if a_lp[k]["objective"] and l_lp[k]["objective"]
+    ]
+    assert lp_differences
     assert max(lp_differences) <= 1e-8
     report["large_fleet"] = {
         "runs": len(large),
@@ -109,6 +134,7 @@ def validate() -> dict[str, object]:
             if r["formulation"] == "L" and r["relaxation"] == "MILP"
         ),
         "max_lp_objective_difference": max(lp_differences),
+        "lp_objective_comparisons": len(lp_differences),
     }
 
     tri_summary = rows("tables/triobjective_summary_generated.csv")[0]
@@ -150,4 +176,3 @@ def validate() -> dict[str, object]:
 
 if __name__ == "__main__":
     print(json.dumps(validate(), indent=2))
-

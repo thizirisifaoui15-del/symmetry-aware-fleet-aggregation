@@ -199,7 +199,7 @@ def generate_instance(
     for k in range(commodities):
         destination_share = rng.dirichlet(np.full(destinations, 1.5))
         demand[:, k] = total_demand * commodity_share[k] * destination_share
-    supply = np.tile(np.sum(demand, axis=0), (origins, 1))
+    supply = heterogeneous_supply(rng, demand, origins)
 
     flow_objectives = np.zeros((1, origins, destinations, commodities, classes))
     dispatch_objectives = np.zeros((1, origins, destinations, classes))
@@ -226,6 +226,37 @@ def generate_instance(
     )
 
 
+def heterogeneous_supply(
+    rng: np.random.Generator,
+    demand: np.ndarray,
+    origins: int,
+    total_supply_factor: float = 1.10,
+) -> np.ndarray:
+    """Generate reproducible, nonredundant origin stocks for every commodity.
+
+    Total system stock is 10% above demand.  A seeded pair of origins is used
+    for all commodities: the dominant origin receives 85% of stock and the
+    secondary origin 15%.  The dominant origin still holds only 93.5% of
+    system demand, so both origins must ship.  Reusing one pair avoids making
+    small instances infeasible merely by requiring too many distinct trips.
+    """
+    if origins < 2:
+        raise ValueError("at least two origins are required")
+    if total_supply_factor <= 1.0:
+        raise ValueError("total_supply_factor must exceed one")
+    commodity_totals = np.sum(demand, axis=0)
+    supply = np.zeros((origins, demand.shape[1]))
+    dominant, secondary = rng.choice(origins, size=2, replace=False)
+    for commodity, total in enumerate(commodity_totals):
+        shares = np.zeros(origins)
+        shares[dominant] = 0.85
+        shares[secondary] = 0.15
+        supply[:, commodity] = total_supply_factor * total * shares
+    if np.any(np.max(supply, axis=0) >= commodity_totals):
+        raise AssertionError("a single origin can cover the full commodity demand")
+    return supply
+
+
 def generate_triobjective_instance() -> ExperimentalInstance:
     seed = TRIOBJECTIVE_SEED
     rng = np.random.default_rng(seed)
@@ -250,7 +281,7 @@ def generate_triobjective_instance() -> ExperimentalInstance:
             * commodity_share[k]
             * rng.dirichlet(np.full(destinations, 1.8))
         )
-    supply = np.tile(np.sum(demand, axis=0), (origins, 1))
+    supply = heterogeneous_supply(rng, demand, origins)
 
     flow_objectives = np.zeros((3, origins, destinations, commodities, classes))
     dispatch_objectives = np.zeros((3, origins, destinations, classes))
@@ -317,15 +348,16 @@ def run_main() -> None:
     raw_rows: list[dict[str, object]] = []
     for family_index, (family, ni, nj, m) in enumerate(MAIN_FAMILIES):
         for seed in MAIN_SEEDS:
+            actual_seed = seed + 100 * family_index
             instance = generate_instance(
-                f"{family}_seed_{seed}", seed + 100 * family_index, ni, nj, 2, 2, (m, m)
+                f"{family}_seed_{actual_seed}", actual_seed, ni, nj, 2, 2, (m, m)
             )
             for formulation in ("aggregate", "labeled"):
                 solution = solve_experimental_model(
                     instance, formulation, time_limit=5.0, mip_rel_gap=1e-7
                 )
                 save_solution(log, raw_rows, experiment, instance, solution, family=family)
-            print(f"main {family} seed {seed}: complete", flush=True)
+            print(f"main {family} seed {actual_seed}: complete", flush=True)
     write_csv(RAW / "main_runs.csv", raw_rows)
 
     summary: list[dict[str, object]] = []
@@ -485,7 +517,7 @@ def run_large_fleet() -> None:
                 )
                 for formulation in ("aggregate", "labeled"):
                     milp_solution = solve_experimental_model(
-                        instance, formulation, time_limit=5.0, mip_rel_gap=1e-7
+                        instance, formulation, time_limit=15.0, mip_rel_gap=1e-7
                     )
                     save_solution(
                         log,
@@ -498,7 +530,7 @@ def run_large_fleet() -> None:
                         relaxation="MILP",
                     )
                     lp_solution = solve_experimental_model(
-                        instance, formulation, time_limit=20.0, relax=True
+                        instance, formulation, time_limit=45.0, relax=True
                     )
                     save_solution(
                         log,
@@ -570,7 +602,8 @@ def run_large_fleet() -> None:
                     "labeled_incumbents": f"{sum(bool(r['has_incumbent']) for r in l_mip.values())}/3",
                     "lp_gap_percent": median(lp_gaps),
                     "max_incumbent_gap_percent": max(incumbent_gaps) if incumbent_gaps else "",
-                    "max_lp_difference": max(lp_differences),
+                    "lp_comparisons": len(lp_differences),
+                    "max_lp_difference": max(lp_differences) if lp_differences else "",
                     "labeled_lp_time_seconds": median(float(r["total_seconds"]) for r in l_lp.values()),
                 }
             )
@@ -804,17 +837,25 @@ def write_environment() -> None:
         "numpy": np.__version__,
         "scipy": scipy.__version__,
         "solver": "scipy.optimize.milp (HiGHS)",
-        "main_seeds": MAIN_SEEDS,
+        "main_seeds_by_family": {
+            family: [seed + 100 * family_index for seed in MAIN_SEEDS]
+            for family_index, (family, *_dimensions) in enumerate(MAIN_FAMILIES)
+        },
         "clone_seed": CLONE_SEED,
         "robustness_seeds": ROBUSTNESS_SEEDS,
         "large_fleet_seeds": LARGE_FLEET_SEEDS,
         "triobjective_seed": TRIOBJECTIVE_SEED,
+        "synthetic_supply_design": {
+            "total_supply_factor": 1.10,
+            "share_formula": "one seeded origin pair for all commodities: 0.85 dominant, 0.15 secondary",
+            "guarantee": "no single origin can cover total commodity demand",
+        },
         "time_limits_seconds": {
             "main": 5,
             "clone": 3,
             "robustness": 30,
-            "large_fleet_milp": 5,
-            "large_fleet_lp": 20,
+            "large_fleet_milp": 15,
+            "large_fleet_lp": 45,
             "triobjective": 20,
             "public": 20,
         },

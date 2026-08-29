@@ -1,0 +1,8 @@
+record_type,name,stock_tonnes,total_demand_tonnes,road_distance_multiplier,capacity_tonnes,vehicles,variable_cost_per_tonne_mile,dispatch_base_cost,dispatch_cost_per_mile,data_status
+scenario,U.S. linehaul illustration,,900,1.18,,,,,,calibrated_scenario_assumption
+origin,Chicago,260,,,,,,,,calibrated_scenario_assumption
+origin,Dallas,250,,,,,,,,calibrated_scenario_assumption
+origin,Atlanta,210,,,,,,,,calibrated_scenario_assumption
+origin,Kansas City,180,,,,,,,,calibrated_scenario_assumption
+vehicle,Class 1,,,,20,30,0.075,65,0.28,calibrated_scenario_assumption
+vehicle,Class 2,,,,28,16,0.058,85,0.34,calibrated_scenario_assumption
